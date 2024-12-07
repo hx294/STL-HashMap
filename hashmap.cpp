@@ -41,12 +41,17 @@ inline size_t HashMap<K, M, H>::bucket_count() const{
 };
 
 template <typename K, typename M, typename H>
-M& HashMap<K, M, H>::at(const K& key) const{
+M& HashMap<K, M, H>::at(const K& key) {
     auto [prev, node_found] = find_node(key);
             if (node_found == nullptr) {
         throw std::out_of_range("HashMap<K, M, H>::at: key not found");
     }
     return node_found->value.second;
+}
+
+template<typename K, typename M, typename H>
+const M& HashMap<K, M, H>::at(const K& key) const {
+	return static_cast<const M&>(const_cast<HashMap<K, M, H>*>(this)->at(key));
 }
 
 template <typename K, typename M, typename H>
@@ -65,8 +70,13 @@ void HashMap<K, M, H>::clear() {
 }
 
 template <typename K, typename M, typename H>
-typename HashMap<K, M, H>::iterator HashMap<K, M, H>::find(const K& key) const{
+typename HashMap<K, M, H>::iterator HashMap<K, M, H>::find(const K& key) {
     return make_iterator(find_node(key).second);
+}
+
+template <typename K, typename M, typename H>
+typename HashMap<K, M, H>::const_iterator HashMap<K, M, H>::find(const K& key) const {
+	return static_cast<const_iterator>(const_cast<HashMap<K, M, H>*> (this)->find(key) );
 }
 
 template <typename K, typename M, typename H>
@@ -122,8 +132,13 @@ typename HashMap<K, M, H>::const_iterator HashMap<K, M, H>::begin() const {
 }
 
 template <typename K, typename M, typename H>
-typename HashMap<K, M, H>::iterator HashMap<K, M, H>::end() const{
+typename HashMap<K, M, H>::iterator HashMap<K, M, H>::end() {
     return make_iterator(nullptr);
+}
+
+template <typename K, typename M, typename H>
+typename HashMap<K, M, H>::const_iterator HashMap<K, M, H>::end() const {
+	return static_cast<const_iterator>(const_cast<HashMap<K, M, H>*>(this)->begin());
 }
 
 template <typename K, typename M, typename H>
