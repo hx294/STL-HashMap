@@ -474,6 +474,28 @@ public:
 
     /* Milestone 2 headers (you need to declare these) */
     // TODO: declare headers for copy constructor/assignment, move constructor/assignment
+	
+	/*
+	 * copy constructor
+	 * */
+	HashMap(const HashMap<K, M, H>& other);
+
+	/*
+	 * copy assignment
+	 * */
+	HashMap<K, M, H>& operator=(const HashMap<K, M, H>& other);
+
+	/*
+	 * move constructor
+	 * */
+	HashMap(HashMap<K, M, H>&& other);
+
+	/*
+	 * move assignment
+	 * */
+	HashMap<K, M, H>& operator=(HashMap<K, M, H>&& other);
+
+
 
 private:
     /*

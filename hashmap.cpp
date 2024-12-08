@@ -138,7 +138,7 @@ typename HashMap<K, M, H>::iterator HashMap<K, M, H>::end() {
 
 template <typename K, typename M, typename H>
 typename HashMap<K, M, H>::const_iterator HashMap<K, M, H>::end() const {
-	return static_cast<const_iterator>(const_cast<HashMap<K, M, H>*>(this)->begin());
+	return static_cast<const_iterator>(const_cast<HashMap<K, M, H>*>(this)->end());
 }
 
 template <typename K, typename M, typename H>
@@ -262,5 +262,36 @@ std::ostream& operator<<(std::ostream& os, const HashMap<K, M, H>& rhs) {
 }
 
 /* Begin Milestone 2: Special Member Functions */
+template <typename K, typename M, typename H>
+HashMap<K, M, H>::HashMap(const HashMap<K, M, H>& other):_size{0},_hash_function{other._hash_function}, _buckets_array(other.bucket_count(),nullptr){
+	for(auto it = other.begin(); it != other.end(); ++it)
+		insert(*it);
+}
+
+template <typename K, typename M, typename H>
+HashMap<K, M, H>& HashMap<K, M, H>::operator=(const HashMap<K, M, H>& other) {
+	if(&other == this) return *this;
+	clear();
+
+	_hash_function = other._hash_function;
+	_buckets_array.resize(other.bucket_count(),nullptr);
+	for(auto it = other.begin(); it != other.end(); ++it)
+		insert(*it);
+
+	return *this;
+}
+
+template <typename K, typename M, typename H>
+HashMap<K, M, H>& HashMap<K, M, H>::operator=(HashMap<K, M, H>&& other) {
+	if(&other == this) return *this;
+	_size = std::move(other._size);
+	_hash_function = std::move(other._hash_function);
+	_buckets_array = std::move(other._buckets_array);
+	return *this;
+}
+
+template <typename K, typename M, typename H>
+HashMap<K, M, H>::HashMap(HashMap<K, M, H>&& other) : _size{std::move(other._size)},
+	   	_hash_function{std::move(other._hash_function)},_buckets_array{std::move(other._buckets_array)}{}
 
 /* end student code */
